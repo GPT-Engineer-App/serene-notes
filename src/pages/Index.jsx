@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, Flex, Input, Textarea, VStack, Text, useColorModeValue, IconButton, Heading } from "@chakra-ui/react";
-import { FaPlus, FaTrash, FaSave, FaEdit } from "react-icons/fa";
+import { FaPlus, FaTrash, FaSave, FaEdit, FaFilePdf } from "react-icons/fa";
 import { client } from "lib/crud";
 
 const Index = () => {
@@ -56,6 +56,15 @@ const Index = () => {
     setIsEditing(true);
   };
 
+  const handleDownloadAsPdf = () => {
+    const element = document.createElement("a");
+    const file = new Blob([noteContent], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = `${activeNote.key}.txt`;
+    document.body.appendChild(element);
+    element.click();
+  };
+
   const sidebarBg = useColorModeValue("blue.50", "blue.900");
   const noteBg = useColorModeValue("white", "gray.700");
 
@@ -85,6 +94,9 @@ const Index = () => {
                 Save
               </Button>
             )}
+            <Button leftIcon={<FaFilePdf />} colorScheme="red" onClick={handleDownloadAsPdf}>
+              Download as PDF
+            </Button>
           </>
         )}
       </VStack>
